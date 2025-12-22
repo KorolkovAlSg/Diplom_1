@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Database.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">praktikum</a> &gt; <a href="index.source.html" class="el_package">stellarburgers</a> &gt; <span class="el_source">Database.java</span></div><h1>Database.java</h1><pre class="source lang-java linenums">package stellarburgers;
+
+import praktikum.Bun;
+import praktikum.Ingredient;
+import praktikum.IngredientType;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Database {
+
+<span class="fc" id="L12">    private final List&lt;Bun&gt; buns = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L13">    private final List&lt;Ingredient&gt; ingredients = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L15">    public Database() {</span>
+<span class="fc" id="L16">        buns.add(new Bun(&quot;Флюоресцентная булка R2-D3&quot;, 988));</span>
+<span class="fc" id="L17">        buns.add(new Bun(&quot;Краторная булка N-200i&quot;, 1255));</span>
+
+<span class="fc" id="L19">        ingredients.add(new Ingredient(IngredientType.SAUCE, &quot;Соус Spicy-X&quot;, 90));</span>
+<span class="fc" id="L20">        ingredients.add(new Ingredient(IngredientType.SAUCE, &quot;Соус фирменный Space Sauce&quot;, 80));</span>
+<span class="fc" id="L21">        ingredients.add(new Ingredient(IngredientType.SAUCE, &quot;Соус традиционный галактический&quot;, 15));</span>
+<span class="fc" id="L22">        ingredients.add(new Ingredient(IngredientType.SAUCE, &quot;Соус с шипами Антарианского плоскоходца&quot;, 88));</span>
+
+<span class="fc" id="L24">        ingredients.add(new Ingredient(IngredientType.FILLING, &quot;Мясо бессмертных моллюсков Protostomia&quot;, 1337));</span>
+<span class="fc" id="L25">        ingredients.add(new Ingredient(IngredientType.FILLING, &quot;Говяжий метеорит (отбивная)&quot;, 3000));</span>
+<span class="fc" id="L26">        ingredients.add(new Ingredient(IngredientType.FILLING, &quot;Биокотлета из марсианской Магнолии&quot;, 424));</span>
+<span class="fc" id="L27">        ingredients.add(new Ingredient(IngredientType.FILLING, &quot;Филе Люминесцентного тетраодонтимформа&quot;, 988));</span>
+<span class="fc" id="L28">        ingredients.add(new Ingredient(IngredientType.FILLING, &quot;Хрустящие минеральные кольца&quot;, 300));</span>
+<span class="fc" id="L29">        ingredients.add(new Ingredient(IngredientType.FILLING, &quot;Плоды Фалленианского дерева&quot;, 874));</span>
+<span class="fc" id="L30">        ingredients.add(new Ingredient(IngredientType.FILLING, &quot;Кристаллы марсианских альфа-сахаридов&quot;, 762));</span>
+<span class="fc" id="L31">        ingredients.add(new Ingredient(IngredientType.FILLING, &quot;Мини-салат Экзо-Плантаго&quot;, 4400));</span>
+<span class="fc" id="L32">        ingredients.add(new Ingredient(IngredientType.FILLING, &quot;Сыр с астероидной плесенью&quot;, 4142));</span>
+<span class="fc" id="L33">    }</span>
+
+    public List&lt;Bun&gt; availableBuns() {
+<span class="fc" id="L36">        return buns;</span>
+    }
+
+    public List&lt;Ingredient&gt; availableIngredients() {
+<span class="fc" id="L40">        return ingredients;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
