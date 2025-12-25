@@ -3,126 +3,81 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.mockito.Mockito;
+import praktikum.Bun;
 import praktikum.Burger;
-import stellarburgers.TBurger;
+import praktikum.Ingredient;
+import praktikum.IngredientType;
+import stellarburgers.Receipt;
 
 import java.util.List;
 
 @RunWith(Parameterized.class)
 public class BurgerWithParamTest {
 
+    private Bun bunMock;
+    private Ingredient ingredientMock;
+    private Receipt receipt;
+
     private Burger burger;
-    private TBurger tBurger;
 
-    private final String bunTName;
-    private final List<String> ingredientsTNames;
-    private final float checkT;
+    private final List<String> tBuns;
+    private final List<List<String>> tIngredients;
 
-    public BurgerWithParamTest(String bunTName, List<String> ingredientsTNames, float checkT) {
-        this.bunTName = bunTName;
-        this.ingredientsTNames = ingredientsTNames;
-        this.checkT = checkT;
+    public BurgerWithParamTest(List<String> tBuns, List<List<String>> tIngredients) {
+        this.tBuns = tBuns;
+        this.tIngredients = tIngredients;
     }
 
-    @Parameterized.Parameters(name = "Булка: {0} | Ингредиенты: {1} | Цена: {2}")
-    public static Object[][] getInfo(){
+    @Parameterized.Parameters(name = "Булка: {0} | Ингредиенты: {1}")
+    public static Object[][] getInfo() {
         return new Object[][]{
-                {"Флюоресцентная булка R2-D3", List.of("Соус Spicy-X", "Мясо бессмертных моллюсков Protostomia"), 3403},
-                {"Флюоресцентная булка R2-D3", List.of("Соус Spicy-X", "Говяжий метеорит (отбивная)"), 5066},
-                {"Флюоресцентная булка R2-D3", List.of("Соус Spicy-X", "Биокотлета из марсианской Магнолии"), 2490},
-                {"Флюоресцентная булка R2-D3", List.of("Соус Spicy-X", "Филе Люминесцентного тетраодонтимформа"), 3054},
-                {"Флюоресцентная булка R2-D3", List.of("Соус Spicy-X", "Хрустящие минеральные кольца"), 2366},
-                {"Флюоресцентная булка R2-D3", List.of("Соус Spicy-X", "Плоды Фалленианского дерева"), 2940},
-                {"Флюоресцентная булка R2-D3", List.of("Соус Spicy-X", "Кристаллы марсианских альфа-сахаридов"), 2828},
-                {"Флюоресцентная булка R2-D3", List.of("Соус Spicy-X", "Мини-салат Экзо-Плантаго"), 6466},
-                {"Флюоресцентная булка R2-D3", List.of("Соус Spicy-X", "Сыр с астероидной плесенью"), 6208},
-                {"Флюоресцентная булка R2-D3", List.of("Соус фирменный Space Sauce", "Мясо бессмертных моллюсков Protostomia"), 3393},
-                {"Флюоресцентная булка R2-D3", List.of("Соус фирменный Space Sauce", "Говяжий метеорит (отбивная)"), 5056},
-                {"Флюоресцентная булка R2-D3", List.of("Соус фирменный Space Sauce", "Биокотлета из марсианской Магнолии"), 2480},
-                {"Флюоресцентная булка R2-D3", List.of("Соус фирменный Space Sauce", "Филе Люминесцентного тетраодонтимформа"), 3044},
-                {"Флюоресцентная булка R2-D3", List.of("Соус фирменный Space Sauce", "Хрустящие минеральные кольца"), 2356},
-                {"Флюоресцентная булка R2-D3", List.of("Соус фирменный Space Sauce", "Плоды Фалленианского дерева"), 2930},
-                {"Флюоресцентная булка R2-D3", List.of("Соус фирменный Space Sauce", "Кристаллы марсианских альфа-сахаридов"), 2818},
-                {"Флюоресцентная булка R2-D3", List.of("Соус фирменный Space Sauce", "Мини-салат Экзо-Плантаго"), 6456},
-                {"Флюоресцентная булка R2-D3", List.of("Соус фирменный Space Sauce", "Сыр с астероидной плесенью"), 6198},
-                {"Флюоресцентная булка R2-D3", List.of("Соус традиционный галактический", "Мясо бессмертных моллюсков Protostomia"), 3328},
-                {"Флюоресцентная булка R2-D3", List.of("Соус традиционный галактический", "Говяжий метеорит (отбивная)"), 4991},
-                {"Флюоресцентная булка R2-D3", List.of("Соус традиционный галактический", "Биокотлета из марсианской Магнолии"), 2415},
-                {"Флюоресцентная булка R2-D3", List.of("Соус традиционный галактический", "Филе Люминесцентного тетраодонтимформа"), 2979},
-                {"Флюоресцентная булка R2-D3", List.of("Соус традиционный галактический", "Хрустящие минеральные кольца"), 2291},
-                {"Флюоресцентная булка R2-D3", List.of("Соус традиционный галактический", "Плоды Фалленианского дерева"), 2865},
-                {"Флюоресцентная булка R2-D3", List.of("Соус традиционный галактический", "Кристаллы марсианских альфа-сахаридов"), 2753},
-                {"Флюоресцентная булка R2-D3", List.of("Соус традиционный галактический", "Мини-салат Экзо-Плантаго"), 6391},
-                {"Флюоресцентная булка R2-D3", List.of("Соус традиционный галактический", "Сыр с астероидной плесенью"), 6133},
-                {"Флюоресцентная булка R2-D3", List.of("Соус с шипами Антарианского плоскоходца", "Мясо бессмертных моллюсков Protostomia"), 3401},
-                {"Флюоресцентная булка R2-D3", List.of("Соус с шипами Антарианского плоскоходца", "Говяжий метеорит (отбивная)"), 5064},
-                {"Флюоресцентная булка R2-D3", List.of("Соус с шипами Антарианского плоскоходца", "Биокотлета из марсианской Магнолии"), 2488},
-                {"Флюоресцентная булка R2-D3", List.of("Соус с шипами Антарианского плоскоходца", "Филе Люминесцентного тетраодонтимформа"), 3052},
-                {"Флюоресцентная булка R2-D3", List.of("Соус с шипами Антарианского плоскоходца", "Хрустящие минеральные кольца"), 2364},
-                {"Флюоресцентная булка R2-D3", List.of("Соус с шипами Антарианского плоскоходца", "Плоды Фалленианского дерева"), 2938},
-                {"Флюоресцентная булка R2-D3", List.of("Соус с шипами Антарианского плоскоходца", "Кристаллы марсианских альфа-сахаридов"), 2826},
-                {"Флюоресцентная булка R2-D3", List.of("Соус с шипами Антарианского плоскоходца", "Мини-салат Экзо-Плантаго"), 6464},
-                {"Флюоресцентная булка R2-D3", List.of("Соус с шипами Антарианского плоскоходца", "Сыр с астероидной плесенью"), 6206},
-                {"Краторная булка N-200i", List.of("Соус Spicy-X", "Мясо бессмертных моллюсков Protostomia"), 3937},
-                {"Краторная булка N-200i", List.of("Соус Spicy-X", "Говяжий метеорит (отбивная)"), 5600},
-                {"Краторная булка N-200i", List.of("Соус Spicy-X", "Биокотлета из марсианской Магнолии"), 3024},
-                {"Краторная булка N-200i", List.of("Соус Spicy-X", "Филе Люминесцентного тетраодонтимформа"), 3588},
-                {"Краторная булка N-200i", List.of("Соус Spicy-X", "Хрустящие минеральные кольца"), 2900},
-                {"Краторная булка N-200i", List.of("Соус Spicy-X", "Плоды Фалленианского дерева"), 3474},
-                {"Краторная булка N-200i", List.of("Соус Spicy-X", "Кристаллы марсианских альфа-сахаридов"), 3362},
-                {"Краторная булка N-200i", List.of("Соус Spicy-X", "Мини-салат Экзо-Плантаго"), 7000},
-                {"Краторная булка N-200i", List.of("Соус Spicy-X", "Сыр с астероидной плесенью"), 6742},
-                {"Краторная булка N-200i", List.of("Соус фирменный Space Sauce", "Мясо бессмертных моллюсков Protostomia"), 3927},
-                {"Краторная булка N-200i", List.of("Соус фирменный Space Sauce", "Говяжий метеорит (отбивная)"), 5590},
-                {"Краторная булка N-200i", List.of("Соус фирменный Space Sauce", "Биокотлета из марсианской Магнолии"), 3014},
-                {"Краторная булка N-200i", List.of("Соус фирменный Space Sauce", "Филе Люминесцентного тетраодонтимформа"), 3578},
-                {"Краторная булка N-200i", List.of("Соус фирменный Space Sauce", "Хрустящие минеральные кольца"), 2890},
-                {"Краторная булка N-200i", List.of("Соус фирменный Space Sauce", "Плоды Фалленианского дерева"), 3464},
-                {"Краторная булка N-200i", List.of("Соус фирменный Space Sauce", "Кристаллы марсианских альфа-сахаридов"), 3352},
-                {"Краторная булка N-200i", List.of("Соус фирменный Space Sauce", "Мини-салат Экзо-Плантаго"), 6990},
-                {"Краторная булка N-200i", List.of("Соус фирменный Space Sauce", "Сыр с астероидной плесенью"), 6732},
-                {"Краторная булка N-200i", List.of("Соус традиционный галактический", "Мясо бессмертных моллюсков Protostomia"), 3862},
-                {"Краторная булка N-200i", List.of("Соус традиционный галактический", "Говяжий метеорит (отбивная)"), 5525},
-                {"Краторная булка N-200i", List.of("Соус традиционный галактический", "Биокотлета из марсианской Магнолии"), 2949},
-                {"Краторная булка N-200i", List.of("Соус традиционный галактический", "Филе Люминесцентного тетраодонтимформа"), 3513},
-                {"Краторная булка N-200i", List.of("Соус традиционный галактический", "Хрустящие минеральные кольца"), 2825},
-                {"Краторная булка N-200i", List.of("Соус традиционный галактический", "Плоды Фалленианского дерева"), 3399},
-                {"Краторная булка N-200i", List.of("Соус традиционный галактический", "Кристаллы марсианских альфа-сахаридов"), 3287},
-                {"Краторная булка N-200i", List.of("Соус традиционный галактический", "Мини-салат Экзо-Плантаго"), 6925},
-                {"Краторная булка N-200i", List.of("Соус традиционный галактический", "Сыр с астероидной плесенью"), 6667},
-                {"Краторная булка N-200i", List.of("Соус с шипами Антарианского плоскоходца", "Мясо бессмертных моллюсков Protostomia"), 3935},
-                {"Краторная булка N-200i", List.of("Соус с шипами Антарианского плоскоходца", "Говяжий метеорит (отбивная)"), 5598},
-                {"Краторная булка N-200i", List.of("Соус с шипами Антарианского плоскоходца", "Биокотлета из марсианской Магнолии"), 3022},
-                {"Краторная булка N-200i", List.of("Соус с шипами Антарианского плоскоходца", "Филе Люминесцентного тетраодонтимформа"), 3586},
-                {"Краторная булка N-200i", List.of("Соус с шипами Антарианского плоскоходца", "Хрустящие минеральные кольца"), 2898},
-                {"Краторная булка N-200i", List.of("Соус с шипами Антарианского плоскоходца", "Плоды Фалленианского дерева"), 3472},
-                {"Краторная булка N-200i", List.of("Соус с шипами Антарианского плоскоходца", "Кристаллы марсианских альфа-сахаридов"), 3360},
-                {"Краторная булка N-200i", List.of("Соус с шипами Антарианского плоскоходца", "Мини-салат Экзо-Плантаго"), 6998},
-                {"Краторная булка N-200i", List.of("Соус с шипами Антарианского плоскоходца", "Сыр с астероидной плесенью"), 6740},
+                {List.of("Флюоресцентная булка R2-D3", "988"), List.of(List.of("SAUCE", "Соус Spicy-X", "90"), List.of("FILLING", "Мясо бессмертных моллюсков Protostomia", "1337"))},
+                {List.of("Флюоресцентная булка R2-D3", "988"), List.of(List.of("SAUCE", "Соус Spicy-X", "90"), List.of("FILLING", "Говяжий метеорит (отбивная)", "3000"))},
+                {List.of("Флюоресцентная булка R2-D3", "988"), List.of(List.of("SAUCE", "Соус Spicy-X", "90"), List.of("FILLING", "Биокотлета из марсианской Магнолии", "424"))},
+                {List.of("Флюоресцентная булка R2-D3", "988"), List.of(List.of("SAUCE", "Соус фирменный Space Sauce", "80"), List.of("FILLING", "Филе Люминесцентного тетраодонтимформа", "988"))},
+                {List.of("Краторная булка N-200i", "1255"), List.of(List.of("SAUCE", "Соус фирменный Space Sauce", "80"), List.of("FILLING", "Хрустящие минеральные кольца", "300"))},
+                {List.of("Краторная булка N-200i", "1255"), List.of(List.of("SAUCE", "Соус традиционный галактический", "15"), List.of("FILLING", "Плоды Фалленианского дерева", "874"))},
+                {List.of("Краторная булка N-200i", "1255"), List.of(List.of("SAUCE", "Соус традиционный галактический", "15"), List.of("FILLING", "Кристаллы марсианских альфа-сахаридов", "762"))},
+                {List.of("Краторная булка N-200i", "1255"), List.of(List.of("SAUCE", "Соус с шипами Антарианского плоскоходца", "88"), List.of("FILLING", "Мини-салат Экзо-Плантаго", "4400"))},
+                {List.of("Краторная булка N-200i", "1255"), List.of(List.of("SAUCE", "Соус с шипами Антарианского плоскоходца", "88"), List.of("FILLING", "Сыр с астероидной плесенью", "4142"))},
         };
     }
 
     @Before
-    public void setVar(){
-
+    public void setVar() {
         burger = new Burger();
-        tBurger = new TBurger(burger,bunTName,ingredientsTNames);
+        receipt = new Receipt();
 
-        tBurger.createTBurger();
+        bunMock = Mockito.mock(Bun.class);
+        ingredientMock = Mockito.mock(Ingredient.class);
+
+        Mockito.when(bunMock.getName()).thenReturn(tBuns.get(0));
+        Mockito.when(bunMock.getPrice()).thenReturn(Float.valueOf(tBuns.get(1)));
+
+        Mockito.when(ingredientMock.getName()).thenReturn(tIngredients.get(0).get(1), tIngredients.get(1).get(1));
+        Mockito.when(ingredientMock.getPrice()).thenReturn(Float.valueOf(tIngredients.get(0).get(2)), Float.valueOf(tIngredients.get(1).get(2)));
+        Mockito.when(ingredientMock.getType()).thenReturn(IngredientType.valueOf(tIngredients.get(0).get(0)), IngredientType.valueOf(tIngredients.get(1).get(0)));
     }
 
     @Test
-    public void getPriceInvokeReturnCorrectPrice(){
-        //Проверь полученную стоимость созданного тестового бургера с тестируемым значением цены бургера
-        Assert.assertEquals(String.format("Метод должен вернуть: %s", checkT), checkT, burger.getPrice(), 0.0);
+    public void getPriceInvokeReturnCorrectPrice() {
+        burger.setBuns(bunMock);
+        burger.addIngredient(ingredientMock);
+        burger.addIngredient(ingredientMock);
+
+        //Проверь полученную стоимость созданного тестового бургера с ценой из метода класса Burger
+        Assert.assertEquals(String.format("Метод должен вернуть: %s", receipt.getPrice(tBuns, tIngredients)), receipt.getPrice(tBuns, tIngredients), burger.getPrice(), 0.0);
     }
 
     @Test
     public void getReceiptInvokeReturnCorrectReceipt(){
-        //Получить тестовое значение квитанции
-        String receipt = tBurger.getTestedValueReceipt(bunTName, ingredientsTNames, checkT);
+        burger.setBuns(bunMock);
+        burger.addIngredient(ingredientMock);
+        burger.addIngredient(ingredientMock);
 
         //Проверь, что тестовая квитанция receipt равна квитанции, полученной из метода класса Burger
-        Assert.assertEquals(String.format("Метод должен вернуть: %s", receipt), receipt, burger.getReceipt());
+        Assert.assertEquals(String.format("Метод должен вернуть: %s", receipt.getReceipt(tBuns, tIngredients)), receipt.getReceipt(tBuns, tIngredients), burger.getReceipt());
     }
+
 }

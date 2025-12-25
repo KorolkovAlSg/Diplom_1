@@ -2,64 +2,76 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import praktikum.Bun;
 import praktikum.Burger;
 import praktikum.Ingredient;
-import praktikum.IngredientType;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BurgerTest {
 
-    private Burger burger;
-    private Ingredient ingredient;
-
     @Mock
     Burger burgerMock;
 
+    @Mock
+    Bun bunMock;
+
+    @Mock
+    Ingredient ingredientMock;
+
+    @Mock
+    Ingredient ingredientMock1;
+
+    @Mock
+    Ingredient ingredientMock2;
+
+    @InjectMocks
+    Burger burger;
+
     @Before
     public void setUp() {
-        burger = new Burger();
-        ingredient = new Ingredient(IngredientType.SAUCE, "Абрикосовый джем", 10);
+        Mockito.when(bunMock.getName()).thenReturn("Сладкая булочка");
+        Mockito.when(ingredientMock.getName()).thenReturn("Абрикосовый джем");
+
+        Mockito.when(ingredientMock1.getName()).thenReturn("Мармеладный стейк");
+        Mockito.when(ingredientMock2.getName()).thenReturn("Шипучка");
     }
 
     @Test
     public void setBunsInvokeWithCorrectArgsOneTimes() {
-
-        Bun bun = new Bun("Сладкая булочка", 50);
-        burgerMock.setBuns(bun);
+        burgerMock.setBuns(bunMock);
 
         //Проверь, что метод setBuns() был вызван 1 раз с корректным аргументом bun
-        Mockito.verify(burgerMock, Mockito.times(1)).setBuns(bun);
+        Mockito.verify(burgerMock, Mockito.times(1)).setBuns(bunMock);
     }
 
     @Test
     public void setBunsInvokeGetCorrectBunName() {
-        Bun smartBun = new Bun("Умная булочка", 999);
-        burger.setBuns(smartBun);
+        burger.setBuns(bunMock);
 
-        //Проверь, что после вызова setBuns в burger есть bun с именем smartBun(Умная булочка)
-        Assert.assertEquals(String.format("Должен вернуть: %s", smartBun.getName()), smartBun.getName(), burger.bun.getName());
+        //Проверь, что после вызова setBuns в burger есть bun с именем Сладкая булочка
+        Assert.assertEquals("Должен вернуть: \"Cладкая булочка\"", "Сладкая булочка", burger.bun.getName());
     }
 
     @Test
     public void addIngredientInvokeWithCorrectArgsTwoTimes() {
 
-        burgerMock.addIngredient(ingredient);
-        burgerMock.addIngredient(ingredient);
+        burgerMock.addIngredient(ingredientMock);
+        burgerMock.addIngredient(ingredientMock);
 
         //Проверь, что метод addIngredient() был вызван 2 раза с корректным аргументом ingredient
-        Mockito.verify(burgerMock, Mockito.times(2)).addIngredient(ingredient);
+        Mockito.verify(burgerMock, Mockito.times(2)).addIngredient(ingredientMock);
     }
 
     @Test
     public void addIngredientGetCorrectIngredientName() {
-        burger.addIngredient(ingredient);
+        burger.addIngredient(ingredientMock);
 
         //Проверь, что после добавления ingredient в burger появился добавленный ingredient
-        Assert.assertEquals(String.format("Должен вернуть: %s", ingredient.getName()), ingredient.getName(), burger.ingredients.get(0).name);
+        Assert.assertEquals("Должен вернуть: \"Абрикосовый джем\"", "Абрикосовый джем", burger.ingredients.get(0).getName());
     }
 
     @Test
@@ -73,17 +85,15 @@ public class BurgerTest {
 
     @Test
     public void removeIngredientGetCorrectIngredientWithRemovedIndx() {
-        Ingredient ingredient_1 = new Ingredient(IngredientType.FILLING, "Мармеладный стейк", 100);
-        Ingredient ingredient_2 = new Ingredient(IngredientType.SAUCE, "Шипучка", 15);
 
-        burger.addIngredient(ingredient);
-        burger.addIngredient(ingredient_1);
-        burger.addIngredient(ingredient_2);
+        burger.addIngredient(ingredientMock);
+        burger.addIngredient(ingredientMock1);
+        burger.addIngredient(ingredientMock2);
 
         burger.removeIngredient(0);
 
-        //Проверь, что после удаления ingredient в списке ingredients burger(а) под индексом 0 находится ingredient_1
-        Assert.assertEquals(String.format("Должен вернуть: %s", ingredient_1.getName()), ingredient_1.getName(), burger.ingredients.get(0).getName());
+        //Проверь, что после удаления ingredientMock в списке ingredients burger(а) под индексом 0 находится ingredientMock1
+        Assert.assertEquals("Должен вернуть: \"Мармеладный стейк\"", "Мармеладный стейк", burger.ingredients.get(0).getName());
     }
 
     @Test
@@ -97,17 +107,15 @@ public class BurgerTest {
 
     @Test
     public void moveIngredientGetCorrectIngredientWithNewIndx() {
-        Ingredient ingredient_1 = new Ingredient(IngredientType.FILLING, "Мармеладный стейк", 100);
-        Ingredient ingredient_2 = new Ingredient(IngredientType.SAUCE, "Шипучка", 15);
 
-        burger.addIngredient(ingredient);
-        burger.addIngredient(ingredient_1);
-        burger.addIngredient(ingredient_2);
+        burger.addIngredient(ingredientMock);
+        burger.addIngredient(ingredientMock1);
+        burger.addIngredient(ingredientMock2);
 
         burger.moveIngredient(0, 2);
         burger.moveIngredient(1, 0);
 
         //Проверь, что после "перемешивания" ингредиентов место Абрикосового джема заняла Шипучка (Было А0М1Ш2 -> Первый вызов М0Ш1А2 -> Второй вызов Ш0М1А2).
-        Assert.assertEquals(String.format("Должен вернуть: %s", ingredient_2.getName()), ingredient_2.getName(), burger.ingredients.get(0).getName());
+        Assert.assertEquals("Должен вернуть: \"Шипучка\"", "Шипучка", burger.ingredients.get(0).getName());
     }
 }
