@@ -22,22 +22,13 @@ public class BurgerTest {
     @Mock
     Ingredient ingredientMock;
 
-    @Mock
-    Ingredient ingredientMock1;
-
-    @Mock
-    Ingredient ingredientMock2;
-
     @InjectMocks
     Burger burger;
 
     @Before
     public void setUp() {
         Mockito.when(bunMock.getName()).thenReturn("Сладкая булочка");
-        Mockito.when(ingredientMock.getName()).thenReturn("Абрикосовый джем");
-
-        Mockito.when(ingredientMock1.getName()).thenReturn("Мармеладный стейк");
-        Mockito.when(ingredientMock2.getName()).thenReturn("Шипучка");
+        Mockito.when(ingredientMock.getName()).thenReturn("Абрикосовый джем","Мармеладный стейк", "Шипучка");
     }
 
     @Test
@@ -60,10 +51,9 @@ public class BurgerTest {
     public void addIngredientInvokeWithCorrectArgsTwoTimes() {
 
         burgerMock.addIngredient(ingredientMock);
-        burgerMock.addIngredient(ingredientMock);
 
-        //Проверь, что метод addIngredient() был вызван 2 раза с корректным аргументом ingredient
-        Mockito.verify(burgerMock, Mockito.times(2)).addIngredient(ingredientMock);
+        //Проверь, что метод addIngredient() был вызван 1 раз с корректным аргументом ingredient
+        Mockito.verify(burgerMock, Mockito.times(1)).addIngredient(ingredientMock);
     }
 
     @Test
@@ -87,12 +77,12 @@ public class BurgerTest {
     public void removeIngredientGetCorrectIngredientWithRemovedIndx() {
 
         burger.addIngredient(ingredientMock);
-        burger.addIngredient(ingredientMock1);
-        burger.addIngredient(ingredientMock2);
+        burger.addIngredient(ingredientMock);
+        burger.addIngredient(ingredientMock);
 
         burger.removeIngredient(0);
 
-        //Проверь, что после удаления ingredientMock в списке ingredients burger(а) под индексом 0 находится ingredientMock1
+        //Проверь, что после удаления Абрикосового джема в списке ingredients burger(а) под индексом 0 находится Мармеладный стейк
         Assert.assertEquals("Должен вернуть: \"Мармеладный стейк\"", "Мармеладный стейк", burger.ingredients.get(0).getName());
     }
 
@@ -109,8 +99,8 @@ public class BurgerTest {
     public void moveIngredientGetCorrectIngredientWithNewIndx() {
 
         burger.addIngredient(ingredientMock);
-        burger.addIngredient(ingredientMock1);
-        burger.addIngredient(ingredientMock2);
+        burger.addIngredient(ingredientMock);
+        burger.addIngredient(ingredientMock);
 
         burger.moveIngredient(0, 2);
         burger.moveIngredient(1, 0);
